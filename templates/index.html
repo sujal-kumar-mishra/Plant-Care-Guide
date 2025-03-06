@@ -1,0 +1,266 @@
+<!-- templates/index.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plant Care Guide Generator</title>
+    <link rel="stylesheet" href="static/styles.css">
+</head>
+<body>
+    <div class="container">
+        <div class="logo-container">
+            <img src="static/NIE_University.png" alt="NIE University Logo">
+            <img src="static/IVIS_logo.png" alt="IVIS Logo">
+            <img src="static/PULSE LOGO.png" alt="PULSE Logo">
+        </div>
+        <header>
+            <h1>Plant Care Guide Generator</h1>
+            <p>Get personalized plant care tips and gardening advice for your plants</p>
+        </header>
+
+        <div class="form-container">
+            <form id="careForm">
+                <!-- Plant Type -->
+                <div class="form-group">
+                    <label for="plant_type">Plant Type:</label>
+                    <input type="text" id="plant_type" name="plant_type" required 
+                           placeholder="e.g., succulents, roses, tomatoes, houseplants">
+                </div>
+
+                <!-- Growing Environment -->
+                <div class="form-group">
+                    <label for="environment">Growing Environment:</label>
+                    <select id="environment" name="environment">
+                        <option value="indoor" selected>Indoor</option>
+                        <option value="outdoor">Outdoor</option>
+                    </select>
+                </div>
+
+                <!-- Climate Zone or Location -->
+                <div class="form-group" id="climate_zone_group">
+                    <label for="climate_zone">Your Climate Zone or Location:</label>
+                    <input type="text" id="climate_zone" name="climate_zone" placeholder="e.g., USDA Zone 5, New York City">
+                </div>
+
+                <!-- Sunlight Exposure -->
+                <div class="form-group">
+                    <label for="sunlight">Sunlight Exposure:</label>
+                    <select id="sunlight" name="sunlight">
+                        <option value="full_sun">Full Sun</option>
+                        <option value="partial_sun">Partial Sun</option>
+                        <option value="full_shade">Full Shade</option>
+                    </select>
+                </div>
+
+                <!-- Watering Frequency -->
+                <div class="form-group">
+                    <label for="watering">Watering Frequency:</label>
+                    <select id="watering" name="watering">
+                        <option value="daily">Daily</option>
+                        <option value="weekly">Weekly</option>
+                        <option value="biweekly">Bi-weekly</option>
+                        <option value="monthly">Monthly</option>
+                    </select>
+                </div>
+
+                <!-- Soil Type -->
+                <div class="form-group">
+                    <label for="soil_type">Soil Type:</label>
+                    <select id="soil_type" name="soil_type">
+                        <option value="sandy">Sandy</option>
+                        <option value="loamy">Loamy</option>
+                        <option value="clay">Clay</option>
+                        <option value="well_draining">Well-draining</option>
+                    </select>
+                </div>
+
+                <!-- Fertilization Needs -->
+                <div class="form-group">
+                    <label for="fertilization">Fertilization Needs:</label>
+                    <select id="fertilization" name="fertilization">
+                        <option value="monthly">Monthly</option>
+                        <option value="seasonal">Seasonal</option>
+                        <option value="never">Never</option>
+                    </select>
+                </div>
+
+                <!-- Pest and Disease Concerns -->
+                <div class="form-group">
+                    <label for="pest_disease">Pests or Diseases Concerns:</label>
+                    <input type="text" id="pest_disease" name="pest_disease" placeholder="e.g., aphids, mold, fungal diseases">
+                </div>
+
+                <!-- Seasonal Tips -->
+                <div class="form-group">
+                    <label for="seasonal_tips">Seasonal Care Tips:</label>
+                    <select id="seasonal_tips" name="seasonal_tips">
+                        <option value="true">Yes, include seasonal care tips</option>
+                        <option value="false">No, skip seasonal care tips</option>
+                    </select>
+                </div>
+
+                <!-- Content Tone -->
+                <div class="form-group">
+                    <label for="tone">Content Tone:</label>
+                    <select id="tone" name="tone">
+                        <option value="professional" selected>Professional</option>
+                        <option value="casual">Casual</option>
+                        <option value="humorous">Humorous</option>
+                        <option value="inspirational">Inspirational</option>
+                        <option value="educational">Educational</option>
+                    </select>
+                </div>
+
+                <!-- Include Post Outlines -->
+                <div class="form-group checkbox">
+                    <input type="checkbox" id="include_outline" name="include_outline" checked>
+                    <label for="include_outline">Include Post Outlines</label>
+                </div>
+
+                <div class="form-group">
+                    <label for="model">LLM Model:</label>
+                    <select id="model" name="model">
+                        <option value="mistral" selected>mistral</option>
+                    </select>
+                </div>
+
+                <button type="submit" id="generateBtn">Generate Plant Care Tips</button>
+            </form>
+        </div>
+
+        <div class="results-container" id="resultsContainer" style="display: none;">
+            <h2>Your Plant Care Tips</h2>
+            <div id="loading" style="display: none;">
+                <div class="spinner"></div>
+                <p>Generating tips...</p>
+            </div>
+            <div id="results">
+                <!-- Results will appear here -->
+            </div>
+            <button id="copyBtn">Copy to Clipboard</button>
+        </div>
+    </div>
+
+    <script>
+        // Fetch available models when page loads
+        document.addEventListener('DOMContentLoaded', async () => {
+            try {
+                const response = await fetch('/models');
+                const data = await response.json();
+                const modelSelect = document.getElementById('model');
+                
+                // Clear existing options
+                modelSelect.innerHTML = '';
+                
+                // Add each model as an option
+                data.models.forEach(model => {
+                    const option = document.createElement('option');
+                    option.value = model;
+                    option.textContent = model;
+                    modelSelect.appendChild(option);
+                });
+            } catch (error) {
+                console.error('Error fetching models:', error);
+            }
+        });
+
+        // Handle form submission
+        document.getElementById('careForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const formData = new FormData(e.target);
+            const resultsContainer = document.getElementById('resultsContainer');
+            const loading = document.getElementById('loading');
+            const results = document.getElementById('results');
+            
+            // Show loading indicator
+            resultsContainer.style.display = 'block';
+            loading.style.display = 'block';
+            results.innerHTML = '';
+            
+            try {
+                const response = await fetch('/generate', {
+                    method: 'POST',
+                    body: formData
+                });
+                
+                if (!response.ok) {
+                    throw new Error(`Error: ${response.statusText}`);
+                }
+                
+                const data = await response.json();
+                
+                // Format and display the results
+                results.innerHTML = formatResponseWithMarkdown(data.generated_ideas);
+                
+            } catch (error) {
+                results.innerHTML = `<div class="error">Error: ${error.message}</div>`;
+            } finally {
+                loading.style.display = 'none';
+            }
+        });
+        
+        // Copy results to clipboard
+        document.getElementById('copyBtn').addEventListener('click', () => {
+            const results = document.getElementById('results').innerText;
+            navigator.clipboard.writeText(results)
+                .then(() => {
+                    const copyBtn = document.getElementById('copyBtn');
+                    copyBtn.textContent = 'Copied!';
+                    setTimeout(() => {
+                        copyBtn.textContent = 'Copy to Clipboard';
+                    }, 2000);
+                })
+                .catch(err => {
+                    console.error('Failed to copy: ', err);
+                });
+        });
+        
+// Simple function to format text with enhanced markdown and styling for better visual appeal
+function formatResponseWithMarkdown(text) {
+    // Handle line breaks
+    let formatted = text.replace(/\n/g, '<br>');
+    
+    // Format titles/headings (# Title)
+    formatted = formatted.replace(/#{1,6}\s+(.*?)(?:<br>|$)/g, '<h3 style="color: #2c3e50; font-size: 1.5rem; font-weight: bold; margin-top: 20px;">$1</h3>');
+    
+    // Format list items (1. text) with enhanced styling
+    formatted = formatted.replace(/(\d+\.\s+)(.*?)(?:<br>|$)/g, '<div class="list-item" style="margin-bottom: 10px; font-size: 1.1rem; line-height: 1.6;">' +
+        '<span class="list-number" style="font-weight: bold; color: #3498db; margin-right: 10px;">$1</span>' +
+        '<span>$2</span>' +
+        '</div>');
+    
+    // Bold text (**bold**) with a clearer visual representation
+    formatted = formatted.replace(/\*\*(.*?)\*\*/g, '<strong style="color: #e74c3c; font-weight: bold;">$1</strong>');
+    
+    // Italic text (*italic*) with more elegant styling
+    formatted = formatted.replace(/\*(.*?)\*/g, '<em style="font-style: italic; color: #8e44ad;">$1</em>');
+    
+    // Highlight key sections like "Sunlight Exposure" or "Watering Frequency"
+    formatted = formatted.replace(/(Sunlight exposure|Watering frequency|Soil type|Fertilization needs|Pests or diseases concerns|Seasonal tips)(:)/g, 
+        '<span style="font-weight: bold; color: #2980b9;">$1</span>:');
+    
+    // Format sections with key information for clarity
+    formatted = formatted.replace(/- (.*?)(?:<br>|$)/g, '<div style="margin-left: 20px; font-size: 1.1rem;">- $1</div>');
+    
+    // For plant type and environment
+    formatted = formatted.replace(/For each guide:.*?Title.*?Exposure/g, function(match) {
+        return '<div style="padding: 10px 0; border-top: 1px solid #ddd;">' + match + '</div>';
+    });
+    
+    // Style bullet points for key information
+    formatted = formatted.replace(/- (.*?)\n/g, '<ul style="list-style-type: square; margin-left: 20px;"><li>$1</li></ul>');
+    
+    // Wrap the whole result in a container for better structure
+    formatted = `<div style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.6; padding: 20px; background-color: #f5f7fa; border-radius: 8px; border: 1px solid #ddd;">
+        <h2 style="text-align: center; color: #2c3e50;">Plant Care Guide</h2>
+        ${formatted}
+    </div>`;
+    
+    return formatted;
+}
+
+    </script>
+</body>
+</html>
