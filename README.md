@@ -83,7 +83,7 @@ Renders the HTML form for users to input plant details.
 - SUJAL KUMAR(https://github.com/sujal-kumar-mishra)
 - SUHAS B M(https://github.com/suhasbm09)
 - SUHAS B H(https://github.com/suhasbm09)
-- SUHAS U(https://github.com/suhasbm09)
+- SUHAS U(https://github.com/SUHAS79)
 - SUJAN D(https://github.com/suhasbm09)
 
 
