@@ -1,4 +1,3 @@
-<!-- templates/index.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,6 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Plant Care Guide Generator</title>
     <link rel="stylesheet" href="static/styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
     <div class="container">
@@ -14,136 +16,233 @@
             <img src="static/NIE_University.png" alt="NIE University Logo">
             <img src="static/PULSE LOGO.png" alt="PULSE Logo">
         </div>
+        
         <header>
+            <div class="leaf-decoration left"></div>
+            <div class="leaf-decoration right"></div>
             <h1>Plant Care Guide Generator</h1>
-            <p>Get personalized plant care tips and gardening advice for your plants</p>
+            <p>Complete the quest to unlock your personalized plant care guide!</p>
+            
+            <!-- Progress bar -->
+            <div class="progress-container">
+                <div class="progress-bar" id="progressBar">
+                    <div class="progress-text">0% Complete</div>
+                </div>
+            </div>
+            
+            <!-- XP and level display -->
+            <div class="level-container">
+                <div class="level-badge" id="levelBadge">1</div>
+                <div class="xp-bar">
+                    <div class="xp-progress" id="xpProgress"></div>
+                </div>
+                <div class="xp-text" id="xpText">0 XP</div>
+            </div>
         </header>
+
+        <!-- Achievement notification -->
+        <div class="achievement" id="achievementNotification">
+            <div class="achievement-icon">🏆</div>
+            <div class="achievement-content">
+                <h3>Achievement Unlocked!</h3>
+                <p id="achievementText">You've earned a new achievement!</p>
+            </div>
+        </div>
 
         <div class="form-container">
             <form id="careForm">
-                <!-- Plant Type -->
-                <div class="form-group">
-                    <label for="plant_type">Plant Type:</label>
-                    <input type="text" id="plant_type" name="plant_type" required 
-                           placeholder="e.g., succulents, roses, tomatoes, houseplants">
+                <!-- Quest stages -->
+                <div class="quest-stage">
+                    <div class="quest-header">
+                        <div class="quest-icon">🌱</div>
+                        <h2>Quest 1: Plant Identification</h2>
+                    </div>
+                    
+                    <!-- Plant Type -->
+                    <div class="form-group" data-xp="10">
+                        <label for="plant_type">Plant Type:</label>
+                        <input type="text" id="plant_type" name="plant_type" required 
+                               placeholder="e.g., succulents, roses, tomatoes, houseplants">
+                        <div class="xp-reward">+10 XP</div>
+                    </div>
+
+                    <!-- Growing Environment -->
+                    <div class="form-group" data-xp="5">
+                        <label for="environment">Growing Environment:</label>
+                        <select id="environment" name="environment">
+                            <option value="indoor" selected>Indoor</option>
+                            <option value="outdoor">Outdoor</option>
+                        </select>
+                        <div class="xp-reward">+5 XP</div>
+                    </div>
                 </div>
 
-                <!-- Growing Environment -->
-                <div class="form-group">
-                    <label for="environment">Growing Environment:</label>
-                    <select id="environment" name="environment">
-                        <option value="indoor" selected>Indoor</option>
-                        <option value="outdoor">Outdoor</option>
-                    </select>
+                <div class="quest-stage">
+                    <div class="quest-header">
+                        <div class="quest-icon">🌍</div>
+                        <h2>Quest 2: Environment Details</h2>
+                    </div>
+                    
+                    <!-- Climate Zone or Location -->
+                    <div class="form-group" id="climate_zone_group" data-xp="15">
+                        <label for="climate_zone">Your Climate Zone or Location:</label>
+                        <input type="text" id="climate_zone" name="climate_zone" placeholder="e.g., USDA Zone 5, New York City">
+                        <div class="xp-reward">+15 XP</div>
+                    </div>
+
+                    <!-- Sunlight Exposure -->
+                    <div class="form-group" data-xp="10">
+                        <label for="sunlight">Sunlight Exposure:</label>
+                        <select id="sunlight" name="sunlight">
+                            <option value="full_sun">Full Sun</option>
+                            <option value="partial_sun">Partial Sun</option>
+                            <option value="full_shade">Full Shade</option>
+                        </select>
+                        <div class="xp-reward">+10 XP</div>
+                    </div>
                 </div>
 
-                <!-- Climate Zone or Location -->
-                <div class="form-group" id="climate_zone_group">
-                    <label for="climate_zone">Your Climate Zone or Location:</label>
-                    <input type="text" id="climate_zone" name="climate_zone" placeholder="e.g., USDA Zone 5, New York City">
+                <div class="quest-stage">
+                    <div class="quest-header">
+                        <div class="quest-icon">💧</div>
+                        <h2>Quest 3: Care Requirements</h2>
+                    </div>
+                    
+                    <!-- Watering Frequency -->
+                    <div class="form-group" data-xp="10">
+                        <label for="watering">Watering Frequency:</label>
+                        <select id="watering" name="watering">
+                            <option value="daily">Daily</option>
+                            <option value="weekly">Weekly</option>
+                            <option value="biweekly">Bi-weekly</option>
+                            <option value="monthly">Monthly</option>
+                        </select>
+                        <div class="xp-reward">+10 XP</div>
+                    </div>
+
+                    <!-- Soil Type -->
+                    <div class="form-group" data-xp="10">
+                        <label for="soil_type">Soil Type:</label>
+                        <select id="soil_type" name="soil_type">
+                            <option value="sandy">Sandy</option>
+                            <option value="loamy">Loamy</option>
+                            <option value="clay">Clay</option>
+                            <option value="well_draining">Well-draining</option>
+                        </select>
+                        <div class="xp-reward">+10 XP</div>
+                    </div>
+
+                    <!-- Fertilization Needs -->
+                    <div class="form-group" data-xp="10">
+                        <label for="fertilization">Fertilization Needs:</label>
+                        <select id="fertilization" name="fertilization">
+                            <option value="monthly">Monthly</option>
+                            <option value="seasonal">Seasonal</option>
+                            <option value="never">Never</option>
+                        </select>
+                        <div class="xp-reward">+10 XP</div>
+                    </div>
                 </div>
 
-                <!-- Sunlight Exposure -->
-                <div class="form-group">
-                    <label for="sunlight">Sunlight Exposure:</label>
-                    <select id="sunlight" name="sunlight">
-                        <option value="full_sun">Full Sun</option>
-                        <option value="partial_sun">Partial Sun</option>
-                        <option value="full_shade">Full Shade</option>
-                    </select>
+                <div class="quest-stage">
+                    <div class="quest-header">
+                        <div class="quest-icon">🐛</div>
+                        <h2>Quest 4: Advanced Care</h2>
+                    </div>
+                    
+                    <!-- Pest and Disease Concerns -->
+                    <div class="form-group" data-xp="15">
+                        <label for="pest_disease">Pests or Diseases Concerns:</label>
+                        <input type="text" id="pest_disease" name="pest_disease" placeholder="e.g., aphids, mold, fungal diseases">
+                        <div class="xp-reward">+15 XP</div>
+                    </div>
+
+                    <!-- Seasonal Tips -->
+                    <div class="form-group" data-xp="5">
+                        <label for="seasonal_tips">Seasonal Care Tips:</label>
+                        <select id="seasonal_tips" name="seasonal_tips">
+                            <option value="true">Yes, include seasonal care tips</option>
+                            <option value="false">No, skip seasonal care tips</option>
+                        </select>
+                        <div class="xp-reward">+5 XP</div>
+                    </div>
                 </div>
 
-                <!-- Watering Frequency -->
-                <div class="form-group">
-                    <label for="watering">Watering Frequency:</label>
-                    <select id="watering" name="watering">
-                        <option value="daily">Daily</option>
-                        <option value="weekly">Weekly</option>
-                        <option value="biweekly">Bi-weekly</option>
-                        <option value="monthly">Monthly</option>
-                    </select>
+                <div class="quest-stage">
+                    <div class="quest-header">
+                        <div class="quest-icon">📝</div>
+                        <h2>Quest 5: Customize Your Guide</h2>
+                    </div>
+                    
+                    <!-- Content Tone -->
+                    <div class="form-group" data-xp="5">
+                        <label for="tone">Content Tone:</label>
+                        <select id="tone" name="tone">
+                            <option value="professional" selected>Professional</option>
+                            <option value="casual">Casual</option>
+                            <option value="humorous">Humorous</option>
+                            <option value="inspirational">Inspirational</option>
+                            <option value="educational">Educational</option>
+                        </select>
+                        <div class="xp-reward">+5 XP</div>
+                    </div>
+
+                    <!-- Include Post Outlines -->
+                    <div class="form-group checkbox" data-xp="5">
+                        <input type="checkbox" id="include_outline" name="include_outline" checked>
+                        <label for="include_outline">Include Post Outlines</label>
+                        <div class="xp-reward">+5 XP</div>
+                    </div>
+
+                    <div class="form-group" data-xp="0">
+                        <label for="model">LLM Model:</label>
+                        <select id="model" name="model">
+                            <option value="mistral" selected>mistral</option>
+                        </select>
+                    </div>
                 </div>
 
-                <!-- Soil Type -->
-                <div class="form-group">
-                    <label for="soil_type">Soil Type:</label>
-                    <select id="soil_type" name="soil_type">
-                        <option value="sandy">Sandy</option>
-                        <option value="loamy">Loamy</option>
-                        <option value="clay">Clay</option>
-                        <option value="well_draining">Well-draining</option>
-                    </select>
-                </div>
-
-                <!-- Fertilization Needs -->
-                <div class="form-group">
-                    <label for="fertilization">Fertilization Needs:</label>
-                    <select id="fertilization" name="fertilization">
-                        <option value="monthly">Monthly</option>
-                        <option value="seasonal">Seasonal</option>
-                        <option value="never">Never</option>
-                    </select>
-                </div>
-
-                <!-- Pest and Disease Concerns -->
-                <div class="form-group">
-                    <label for="pest_disease">Pests or Diseases Concerns:</label>
-                    <input type="text" id="pest_disease" name="pest_disease" placeholder="e.g., aphids, mold, fungal diseases">
-                </div>
-
-                <!-- Seasonal Tips -->
-                <div class="form-group">
-                    <label for="seasonal_tips">Seasonal Care Tips:</label>
-                    <select id="seasonal_tips" name="seasonal_tips">
-                        <option value="true">Yes, include seasonal care tips</option>
-                        <option value="false">No, skip seasonal care tips</option>
-                    </select>
-                </div>
-
-                <!-- Content Tone -->
-                <div class="form-group">
-                    <label for="tone">Content Tone:</label>
-                    <select id="tone" name="tone">
-                        <option value="professional" selected>Professional</option>
-                        <option value="casual">Casual</option>
-                        <option value="humorous">Humorous</option>
-                        <option value="inspirational">Inspirational</option>
-                        <option value="educational">Educational</option>
-                    </select>
-                </div>
-
-                <!-- Include Post Outlines -->
-                <div class="form-group checkbox">
-                    <input type="checkbox" id="include_outline" name="include_outline" checked>
-                    <label for="include_outline">Include Post Outlines</label>
-                </div>
-
-                <div class="form-group">
-                    <label for="model">LLM Model:</label>
-                    <select id="model" name="model">
-                        <option value="mistral" selected>mistral</option>
-                    </select>
-                </div>
-
-                <button type="submit" id="generateBtn">Generate Plant Care Tips</button>
+                <button type="submit" id="generateBtn" class="disabled">
+                    <span class="btn-text">Complete All Quests to Generate</span>
+                    <span class="btn-icon">🔮</span>
+                </button>
             </form>
         </div>
 
         <div class="results-container" id="resultsContainer" style="display: none;">
-            <h2>Your Plant Care Tips</h2>
+            <div class="reward-banner" id="rewardBanner">
+                <div class="reward-icon">🎉</div>
+                <h2>Quest Complete!</h2>
+                <p>You've earned the Plant Whisperer badge and 100 bonus XP!</p>
+            </div>
+            
+            <h2>Your Plant Care Guide</h2>
             <div id="loading" style="display: none;">
                 <div class="spinner"></div>
-                <p>Generating tips...</p>
+                <p>Generating your magical plant guide...</p>
             </div>
-            <div id="results">
+            <div id="results" class="sticky-note">
                 <!-- Results will appear here -->
             </div>
             <button id="copyBtn">Copy to Clipboard</button>
+            <button id="shareBtn" class="share-btn">Share Your Achievement</button>
         </div>
     </div>
 
     <script>
-        // Fetch available models when page loads
+        // Track user progress and XP
+        let totalXP = 0;
+        let userLevel = 1;
+        let completedFields = 0;
+        let totalFields = document.querySelectorAll('.form-group[data-xp]').length;
+        const achievements = [
+            { id: 'first_step', name: 'First Step', description: 'You started your plant care journey!', unlocked: false },
+            { id: 'halfway', name: 'Halfway There', description: 'You\'re halfway to your plant care guide!', unlocked: false },
+            { id: 'plant_expert', name: 'Plant Expert', description: 'You\'ve completed all plant information fields!', unlocked: false },
+            { id: 'master_gardener', name: 'Master Gardener', description: 'You\'ve earned your plant care guide!', unlocked: false }
+        ];
+
+        // Initialize form elements
         document.addEventListener('DOMContentLoaded', async () => {
             try {
                 const response = await fetch('/models');
@@ -160,14 +259,121 @@
                     option.textContent = model;
                     modelSelect.appendChild(option);
                 });
+                
+                // Show first achievement
+                unlockAchievement('first_step');
+                
+                // Add event listeners to form fields
+                const formFields = document.querySelectorAll('input, select');
+                formFields.forEach(field => {
+                    field.addEventListener('change', updateProgress);
+                });
+                
             } catch (error) {
                 console.error('Error fetching models:', error);
             }
         });
 
+        // Update progress when form fields change
+        function updateProgress() {
+            // Count completed fields
+            completedFields = 0;
+            document.querySelectorAll('.form-group[data-xp]').forEach(group => {
+                const input = group.querySelector('input, select');
+                if (input && input.value) {
+                    completedFields++;
+                    
+                    // Add XP if not already added
+                    if (!input.dataset.xpAdded) {
+                        const xpValue = parseInt(group.dataset.xp);
+                        addXP(xpValue);
+                        input.dataset.xpAdded = 'true';
+                        
+                        // Show XP animation
+                        const xpReward = group.querySelector('.xp-reward');
+                        xpReward.classList.add('xp-earned');
+                        setTimeout(() => {
+                            xpReward.classList.remove('xp-earned');
+                        }, 1500);
+                    }
+                }
+            });
+            
+            // Update progress bar
+            const progressPercent = Math.round((completedFields / totalFields) * 100);
+            document.getElementById('progressBar').style.width = progressPercent + '%';
+            document.getElementById('progressBar').querySelector('.progress-text').textContent = progressPercent + '% Complete';
+            
+            // Check for halfway achievement
+            if (progressPercent >= 50 && !achievements.find(a => a.id === 'halfway').unlocked) {
+                unlockAchievement('halfway');
+            }
+            
+            // Check for plant expert achievement
+            if (progressPercent === 100 && !achievements.find(a => a.id === 'plant_expert').unlocked) {
+                unlockAchievement('plant_expert');
+                document.getElementById('generateBtn').classList.remove('disabled');
+                document.getElementById('generateBtn').querySelector('.btn-text').textContent = 'Generate Your Plant Care Guide!';
+            }
+        }
+        
+        // Add XP and update level
+        function addXP(amount) {
+            totalXP += amount;
+            document.getElementById('xpText').textContent = totalXP + ' XP';
+            
+            // Update level (every 100 XP)
+            const newLevel = Math.floor(totalXP / 100) + 1;
+            if (newLevel > userLevel) {
+                userLevel = newLevel;
+                document.getElementById('levelBadge').textContent = userLevel;
+                
+                // Level up animation
+                document.getElementById('levelBadge').classList.add('level-up');
+                setTimeout(() => {
+                    document.getElementById('levelBadge').classList.remove('level-up');
+                }, 1500);
+            }
+            
+            // Update XP progress bar
+            const xpPercent = (totalXP % 100);
+            document.getElementById('xpProgress').style.width = xpPercent + '%';
+        }
+        
+        // Unlock achievement and show notification
+        function unlockAchievement(achievementId) {
+            const achievement = achievements.find(a => a.id === achievementId);
+            if (achievement && !achievement.unlocked) {
+                achievement.unlocked = true;
+                
+                // Show notification
+                const notification = document.getElementById('achievementNotification');
+                document.getElementById('achievementText').textContent = achievement.description;
+                notification.classList.add('show');
+                
+                // Add bonus XP
+                addXP(25);
+                
+                // Hide notification after 3 seconds
+                setTimeout(() => {
+                    notification.classList.remove('show');
+                }, 3000);
+            }
+        }
+
         // Handle form submission
         document.getElementById('careForm').addEventListener('submit', async (e) => {
             e.preventDefault();
+            
+            // Check if all quests are complete
+            if (completedFields < totalFields) {
+                // Shake button if not complete
+                document.getElementById('generateBtn').classList.add('shake');
+                setTimeout(() => {
+                    document.getElementById('generateBtn').classList.remove('shake');
+                }, 500);
+                return;
+            }
             
             const formData = new FormData(e.target);
             const resultsContainer = document.getElementById('resultsContainer');
@@ -178,6 +384,9 @@
             resultsContainer.style.display = 'block';
             loading.style.display = 'block';
             results.innerHTML = '';
+            
+            // Scroll to results
+            resultsContainer.scrollIntoView({ behavior: 'smooth' });
             
             try {
                 const response = await fetch('/generate', {
@@ -192,7 +401,16 @@
                 const data = await response.json();
                 
                 // Format and display the results
-                results.innerHTML = formatResponseWithMarkdown(data.generated_ideas);
+                results.innerHTML = formatResponseAsStickyNote(data.generated_ideas);
+                
+                // Show reward banner
+                document.getElementById('rewardBanner').classList.add('show');
+                
+                // Unlock final achievement
+                unlockAchievement('master_gardener');
+                
+                // Add bonus XP
+                addXP(100);
                 
             } catch (error) {
                 results.innerHTML = `<div class="error">Error: ${error.message}</div>`;
@@ -217,50 +435,57 @@
                 });
         });
         
-// Simple function to format text with enhanced markdown and styling for better visual appeal
-function formatResponseWithMarkdown(text) {
-    // Handle line breaks
-    let formatted = text.replace(/\n/g, '<br>');
-    
-    // Format titles/headings (# Title)
-    formatted = formatted.replace(/#{1,6}\s+(.*?)(?:<br>|$)/g, '<h3 style="color: #2c3e50; font-size: 1.5rem; font-weight: bold; margin-top: 20px;">$1</h3>');
-    
-    // Format list items (1. text) with enhanced styling
-    formatted = formatted.replace(/(\d+\.\s+)(.*?)(?:<br>|$)/g, '<div class="list-item" style="margin-bottom: 10px; font-size: 1.1rem; line-height: 1.6;">' +
-        '<span class="list-number" style="font-weight: bold; color: #3498db; margin-right: 10px;">$1</span>' +
-        '<span>$2</span>' +
-        '</div>');
-    
-    // Bold text (**bold**) with a clearer visual representation
-    formatted = formatted.replace(/\*\*(.*?)\*\*/g, '<strong style="color: #e74c3c; font-weight: bold;">$1</strong>');
-    
-    // Italic text (*italic*) with more elegant styling
-    formatted = formatted.replace(/\*(.*?)\*/g, '<em style="font-style: italic; color: #8e44ad;">$1</em>');
-    
-    // Highlight key sections like "Sunlight Exposure" or "Watering Frequency"
-    formatted = formatted.replace(/(Sunlight exposure|Watering frequency|Soil type|Fertilization needs|Pests or diseases concerns|Seasonal tips)(:)/g, 
-        '<span style="font-weight: bold; color: #2980b9;">$1</span>:');
-    
-    // Format sections with key information for clarity
-    formatted = formatted.replace(/- (.*?)(?:<br>|$)/g, '<div style="margin-left: 20px; font-size: 1.1rem;">- $1</div>');
-    
-    // For plant type and environment
-    formatted = formatted.replace(/For each guide:.*?Title.*?Exposure/g, function(match) {
-        return '<div style="padding: 10px 0; border-top: 1px solid #ddd;">' + match + '</div>';
-    });
-    
-    // Style bullet points for key information
-    formatted = formatted.replace(/- (.*?)\n/g, '<ul style="list-style-type: square; margin-left: 20px;"><li>$1</li></ul>');
-    
-    // Wrap the whole result in a container for better structure
-    formatted = `<div style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.6; padding: 20px; background-color: #f5f7fa; border-radius: 8px; border: 1px solid #ddd;">
-        <h2 style="text-align: center; color: #2c3e50;">Plant Care Guide</h2>
-        ${formatted}
-    </div>`;
-    
-    return formatted;
-}
-
+        // Share button (mock functionality)
+        document.getElementById('shareBtn').addEventListener('click', () => {
+            const shareBtn = document.getElementById('shareBtn');
+            shareBtn.textContent = 'Shared!';
+            shareBtn.classList.add('shared');
+            
+            // Add bonus XP for sharing
+            addXP(50);
+            
+            setTimeout(() => {
+                shareBtn.textContent = 'Share Your Achievement';
+                shareBtn.classList.remove('shared');
+            }, 2000);
+        });
+        
+        // Format response as a sticky note
+        function formatResponseAsStickyNote(text) {
+            // Handle line breaks
+            let formatted = text.replace(/\n/g, '<br>');
+            
+            // Format titles/headings (# Title)
+            formatted = formatted.replace(/#{1,6}\s+(.*?)(?:<br>|$)/g, 
+                '<h3 class="sticky-title">$1</h3>');
+            
+            // Format list items (1. text) with enhanced styling
+            formatted = formatted.replace(/(\d+\.\s+)(.*?)(?:<br>|$)/g, 
+                '<div class="sticky-list-item">' +
+                '<span class="sticky-list-number">$1</span>' +
+                '<span>$2</span>' +
+                '</div>');
+            
+            // Bold text (**bold**)
+            formatted = formatted.replace(/\*\*(.*?)\*\*/g, '<strong class="sticky-bold">$1</strong>');
+            
+            // Italic text (*italic*)
+            formatted = formatted.replace(/\*(.*?)\*/g, '<em class="sticky-italic">$1</em>');
+            
+            // Highlight key sections
+            formatted = formatted.replace(/(Sunlight exposure|Watering frequency|Soil type|Fertilization needs|Pests or diseases concerns|Seasonal tips)(:)/g, 
+                '<span class="sticky-key">$1</span>:');
+            
+            // Format bullet points
+            formatted = formatted.replace(/- (.*?)(?:<br>|$)/g, 
+                '<div class="sticky-bullet">- $1</div>');
+            
+            // Add a pin to the sticky note
+            const pin = '<div class="sticky-pin"></div>';
+            
+            return pin + formatted;
+        }
     </script>
 </body>
 </html>
+
