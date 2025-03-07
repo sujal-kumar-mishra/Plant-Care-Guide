@@ -40,7 +40,7 @@ plant_care_guide/
 ### Setup Instructions
 1. Clone the repository:
    ```sh
-   git clone https://github.com/sujal-kumar-mishra/Plant-Care-Guide.git
+   git clone https://github.com/sujal-kumar-mishra/Plant-Care-Guide-48.git
    cd Plant-Care-Guide
    ```
 2. Install dependencies:
@@ -80,11 +80,11 @@ Renders the HTML form for users to input plant details.
 - **Multi-language Support**: Generate guides in different languages.
 
 ## Contributors
-- SUJAL KUMAR(https://github.com/sujal-kumar-mishra)
-- SUHAS B M(https://github.com/suhasbm09)
-- SUHAS B H(https://github.com/suhasbm09)
-- SUHAS U(https://github.com/SUHAS79)
-- SUJAN D(https://github.com/suhasbm09)
+- SUJAL KUMAR 4NI22CS223 (https://github.com/sujal-kumar-mishra)
+- SUHAS B M 4NI22CS221 (https://github.com/suhasbm09)
+- SUHAS B H 4NI22CS220 (https://github.com/suhas37bh)
+- SUHAS U 4NI22CS222(https://github.com/SUHAS79)
+- SUJAN D 4NI22CS224(https://github.com/Shree-23012004)
 
 
 
