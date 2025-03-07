@@ -40,8 +40,8 @@ plant_care_guide/
 ### Setup Instructions
 1. Clone the repository:
    ```sh
-   git clone https://github.com/yourusername/plant_care_guide.git
-   cd plant_care_guide
+   git clone https://github.com/sujal-kumar-mishra/Plant-Care-Guide.git
+   cd Plant-Care-Guide
    ```
 2. Install dependencies:
    ```sh
