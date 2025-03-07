@@ -86,5 +86,5 @@ Renders the HTML form for users to input plant details.
 - SUHAS U 4NI22CS222(https://github.com/SUHAS79)
 - SUJAN D 4NI22CS224(https://github.com/Shree-23012004)
 
-
-
+## DEMONSTRATION AND REPORT LINK
+https://drive.google.com/drive/folders/1SWMhHm5plU4utC93-h9c_rzsEF_ug8GE?usp=sharing
