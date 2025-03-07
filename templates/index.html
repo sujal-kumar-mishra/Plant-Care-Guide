@@ -10,7 +10,20 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <div class="container">
+    <div id="start-screen" class="start-screen">
+        <div class="sticky-note start-note">
+            <div class="sticky-pin"></div>
+            <h2>Welcome, Plant Enthusiast!</h2>
+            <p>Are you ready to embark on a journey to become the ultimate Plant Whisperer?</p>
+            <button id="start-button" class="start-button">
+                <span class="btn-text">Start Your Plant Care Adventure</span>
+                <span class="btn-icon">🌱</span>
+            </button>
+        </div>
+    </div>
+    
+    <div id="main-content" class="main-content" style="display: none;">
+        <div class="container">
         <div class="logo-container">
             <img src="static/IVIS_logo.png" alt="IVIS Logo">
             <img src="static/NIE_University.png" alt="NIE University Logo">
@@ -485,6 +498,13 @@
             
             return pin + formatted;
         }
+    </script>
+
+    <script>
+        document.getElementById('start-button').addEventListener('click', function() {
+            document.getElementById('start-screen').style.display = 'none';
+            document.getElementById('main-content').style.display = 'block';
+        });
     </script>
 </body>
 </html>
